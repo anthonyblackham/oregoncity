@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="data/2017Parcels_1.js"></script>
+        <script src="data/1851OriginalOregonCityPlat_2.js"></script>
+        <script src="data/1851BLMGLO_3.js"></script>
+        <script src="data/1851LeglislativeSession_4.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[45.341969585900685,-122.63328227251054],[45.366125664645004,-122.58320156613176]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.addAttribution('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a>');
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        var overlay_PioneerBasemap_0 = L.tileLayer('https://a.tile.thunderforest.com/pioneer/{z}/{x}/{y}.png?apikey=db5ae1f5778a448ca662554581f283c5', {
+            opacity: 1.0
+        });
+        overlay_PioneerBasemap_0.addTo(map);
+        map.addLayer(overlay_PioneerBasemap_0);
+        function pop_2017Parcels_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">APN</th>\
+                        <td>' + (feature.properties['APN'] !== null ? Autolinker.link(String(feature.properties['APN'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">APN2</th>\
+                        <td>' + (feature.properties['APN2'] !== null ? Autolinker.link(String(feature.properties['APN2'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">OWNER</th>\
+                        <td>' + (feature.properties['OWNER'] !== null ? Autolinker.link(String(feature.properties['OWNER'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ADDR</th>\
+                        <td>' + (feature.properties['ADDR'] !== null ? Autolinker.link(String(feature.properties['ADDR'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">CITY</th>\
+                        <td>' + (feature.properties['CITY'] !== null ? Autolinker.link(String(feature.properties['CITY'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">STATE</th>\
+                        <td>' + (feature.properties['STATE'] !== null ? Autolinker.link(String(feature.properties['STATE'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZIP</th>\
+                        <td>' + (feature.properties['ZIP'] !== null ? Autolinker.link(String(feature.properties['ZIP'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_2017Parcels_1_0() {
+            return {
+                pane: 'pane_2017Parcels_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(0,29,248,1.0)',
+            }
+        }
+        map.createPane('pane_2017Parcels_1');
+        map.getPane('pane_2017Parcels_1').style.zIndex = 401;
+        map.getPane('pane_2017Parcels_1').style['mix-blend-mode'] = 'normal';
+        var layer_2017Parcels_1 = new L.geoJson(json_2017Parcels_1, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_2017Parcels_1',
+            onEachFeature: pop_2017Parcels_1,
+            style: style_2017Parcels_1_0,
+        });
+        bounds_group.addLayer(layer_2017Parcels_1);
+        function pop_1851OriginalOregonCityPlat_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Source</th>\
+                        <td>' + (feature.properties['Plat'] !== null ? Autolinker.link(String(feature.properties['Plat'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Legal Description</th>\
+                        <td>' + (feature.properties['LegalDescr'] !== null ? Autolinker.link(String(feature.properties['LegalDescr'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_1851OriginalOregonCityPlat_2_0() {
+            return {
+                pane: 'pane_1851OriginalOregonCityPlat_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(106,106,106,1.0)',
+            }
+        }
+        map.createPane('pane_1851OriginalOregonCityPlat_2');
+        map.getPane('pane_1851OriginalOregonCityPlat_2').style.zIndex = 402;
+        map.getPane('pane_1851OriginalOregonCityPlat_2').style['mix-blend-mode'] = 'normal';
+        var layer_1851OriginalOregonCityPlat_2 = new L.geoJson(json_1851OriginalOregonCityPlat_2, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_1851OriginalOregonCityPlat_2',
+            onEachFeature: pop_1851OriginalOregonCityPlat_2,
+            style: style_1851OriginalOregonCityPlat_2_0,
+        });
+        bounds_group.addLayer(layer_1851OriginalOregonCityPlat_2);
+        map.addLayer(layer_1851OriginalOregonCityPlat_2);
+        function pop_1851BLMGLO_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Owner</th>\
+                        <td>' + (feature.properties['Owner'] !== null ? Autolinker.link(String(feature.properties['Owner'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Date</th>\
+                        <td>' + (feature.properties['Date'] !== null ? Autolinker.link(String(feature.properties['Date'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Legal Description</th>\
+                        <td>' + (feature.properties['LegalDes_1'] !== null ? Autolinker.link(String(feature.properties['LegalDes_1'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Comments</th>\
+                        <td>' + (feature.properties['Comments_1'] !== null ? Autolinker.link(String(feature.properties['Comments_1'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">URL</th>\
+                        <td>' + (feature.properties['URL'] !== null ? Autolinker.link(String(feature.properties['URL'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DataSource</th>\
+                        <td>' + (feature.properties['DataSource'] !== null ? Autolinker.link(String(feature.properties['DataSource'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_1851BLMGLO_3_0() {
+            return {
+                pane: 'pane_1851BLMGLO_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,0,0,1.0)',
+            }
+        }
+        map.createPane('pane_1851BLMGLO_3');
+        map.getPane('pane_1851BLMGLO_3').style.zIndex = 403;
+        map.getPane('pane_1851BLMGLO_3').style['mix-blend-mode'] = 'normal';
+        var layer_1851BLMGLO_3 = new L.geoJson(json_1851BLMGLO_3, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_1851BLMGLO_3',
+            onEachFeature: pop_1851BLMGLO_3,
+            style: style_1851BLMGLO_3_0,
+        });
+        bounds_group.addLayer(layer_1851BLMGLO_3);
+        map.addLayer(layer_1851BLMGLO_3);
+        function pop_1851LeglislativeSession_4(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Owner</th>\
+                        <td>' + (feature.properties['Owner'] !== null ? Autolinker.link(String(feature.properties['Owner'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Date</th>\
+                        <td>' + (feature.properties['Date'] !== null ? Autolinker.link(String(feature.properties['Date'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Legal Description</th>\
+                        <td>' + (feature.properties['LegalDes_1'] !== null ? Autolinker.link(String(feature.properties['LegalDes_1'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Comments</th>\
+                        <td>' + (feature.properties['Comments_1'] !== null ? Autolinker.link(String(feature.properties['Comments_1'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">URL</th>\
+                        <td>' + (feature.properties['URL'] !== null ? Autolinker.link(String(feature.properties['URL'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_1851LeglislativeSession_4_0() {
+            return {
+                pane: 'pane_1851LeglislativeSession_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,145,0,1.0)',
+            }
+        }
+        map.createPane('pane_1851LeglislativeSession_4');
+        map.getPane('pane_1851LeglislativeSession_4').style.zIndex = 404;
+        map.getPane('pane_1851LeglislativeSession_4').style['mix-blend-mode'] = 'normal';
+        var layer_1851LeglislativeSession_4 = new L.geoJson(json_1851LeglislativeSession_4, {
+            attribution: '<a href=""></a>',
+            pane: 'pane_1851LeglislativeSession_4',
+            onEachFeature: pop_1851LeglislativeSession_4,
+            style: style_1851LeglislativeSession_4_0,
+        });
+        bounds_group.addLayer(layer_1851LeglislativeSession_4);
+        map.addLayer(layer_1851LeglislativeSession_4);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/1851LeglislativeSession_4.png" /> 1851 Leglislative Session': layer_1851LeglislativeSession_4,'<img src="legend/1851BLMGLO_3.png" /> 1851 BLM GLO': layer_1851BLMGLO_3,'<img src="legend/1851OriginalOregonCityPlat_2.png" /> 1851 Original Oregon City Plat': layer_1851OriginalOregonCityPlat_2,'<img src="legend/2017Parcels_1.png" /> 2017 Parcels': layer_2017Parcels_1,"Pioneer Basemap": overlay_PioneerBasemap_0,},{collapsed:false}).addTo(map);
+        setBounds();
+        </script>
+    </body>
+</html>
