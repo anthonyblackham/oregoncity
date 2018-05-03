@@ -8,7 +8,6 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <link rel="stylesheet" href="css/leaflet.css">
         <link rel="stylesheet" href="css/qgis2web.css">
-        <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
         <style>
         html, body, #map {
             width: 100%;
@@ -17,12 +16,6 @@
             margin: 0;
         }
 
-        #basemapslidercontainer {
-          position: absolute;
-          top: 150px;
-          right: 10px;
-          z-index: 1000;
-        }
 <!--
         #basemapslider{
           font-size:62.5%;
@@ -31,11 +24,18 @@
           width:7px;
         }
 -->
-        #basemapslider{
+         #slidecontainer {
+          position: absolute;
+          top: 150px;
+          right: 10px;
+          z-index: 1000;
+        }
+
+         #slide {
           font-size:62.5%;
-          margin: 14px;
-          height: 7px;
-          width:200px;
+          margin: 7px;
+          height: 14px;
+          width: 200px;
         }
 
         </style>
@@ -43,6 +43,8 @@
     </head>
     <body>
         <div id="map">
+
+
 <!--
         <div id="basemapslidercontainer">
         <div id="basemapslider">
@@ -63,8 +65,6 @@
         <script src="data/1851OriginalOregonCityPlat_2.js"></script>
         <script src="data/1851BLMGLO_3.js"></script>
         <script src="data/1851LeglislativeSession_4.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
         <script>
         var map = L.map('map', {
             zoomControl:true, maxZoom:28, minZoom:1
@@ -75,29 +75,11 @@
         function setBounds() {
         }
 
-//Basemap Slider
+//Basemap Slider Div Controls
 
-    $(document).ready(function () {
-      $("#basemapslider").slider({
-            animate: true,
-            value: 1,
-            orientation: "horizontal",
-            min: 0,
-            max: 1,
-            step: 0.1,
-            slide: function (event, ui) {
-                mytile.setOpacity(ui.value);
-            }
-       });
 
-        $('#basemapslider').mousedown(function(){
-          map.dragging.disable();
-        })
 
-        $('#basemapslider').mouseup(function(){
-          map.dragging.enable();
-        })
-    })
+
 
 //Original Oregon City Plat Scan
       var mytile =L.tileLayer('https://rawgithub.com/HerbFargus/oregoncity/master/OregonCityPlat/{z}/{x}/{y}.png', {
@@ -317,9 +299,30 @@
         });
         bounds_group.addLayer(layer_1851LeglislativeSession_4);
         map.addLayer(layer_1851LeglislativeSession_4);
+
+
+
+//HTML5 Slider Test
+
+
+function updateOpacity(value) {
+    mytile.setOpacity(value);
+}
+
         var baseMaps = {};
-        L.control.layers(baseMaps,{'<img src="legend/1851LeglislativeSession_4.png" /> 1851 Leglislative Session': layer_1851LeglislativeSession_4,'<img src="legend/1851BLMGLO_3.png" /> 1851 BLM GLO': layer_1851BLMGLO_3,'<img src="legend/1851OriginalOregonCityPlat_2.png" /> 1851 Original Oregon City Plat': layer_1851OriginalOregonCityPlat_2,'<img src="legend/2017Parcels_1.png" /> 2017 Parcels': layer_2017Parcels_1, "Pioneer Basemap": overlay_PioneerBasemap_0, 'Original Oregon City Plat Scan <div id="basemapslidercontainer"></div> <div id="basemapslider"></div> ': mytile,},{collapsed:true}).addTo(map);
+        L.control.layers(baseMaps,{'<img src="legend/1851LeglislativeSession_4.png" /> 1851 Leglislative Session': layer_1851LeglislativeSession_4,'<img src="legend/1851BLMGLO_3.png" /> 1851 BLM GLO': layer_1851BLMGLO_3,'<img src="legend/1851OriginalOregonCityPlat_2.png" /> 1851 Original Oregon City Plat': layer_1851OriginalOregonCityPlat_2,'<img src="legend/2017Parcels_1.png" /> 2017 Parcels': layer_2017Parcels_1, "Pioneer Basemap": overlay_PioneerBasemap_0, 'Original Oregon City Plat Scan <div id="slidecontainer"></div><div id="slide"><input id="slide" type="range" min="0" max="1" step="0.1" value="0.5" onchange="updateOpacity(this.value)"</div> ': mytile,},{collapsed:true}).addTo(map);
         setBounds();
+
+//Basemap Slider Div Controls
+
+var div = L.DomUtil.get('slide');
+if (!L.Browser.touch) {
+    L.DomEvent.disableClickPropagation(div);
+    L.DomEvent.on(div, 'mousewheel', L.DomEvent.stopPropagation);
+} else {
+    L.DomEvent.on(div, 'click', L.DomEvent.stopPropagation);
+}
+
         </script>
     </body>
 </html>
